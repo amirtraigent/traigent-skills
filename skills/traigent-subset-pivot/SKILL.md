@@ -60,6 +60,14 @@ finalists on the whole set. Always **state the permutation count** and frame sea
 - **Catalog ACL scores are PRIORS, not guarantees.** Many a=3 knobs (decomposition,
   self-consistency, RAG, reasoning models) are cost-dominated on a given task — measure them
   on a subset before trusting them; screen out the losers cheaply.
+- **The subset RANKS noisily; the FULL SET decides.** Near-equal configs swap order between
+  subset slices — and even between eval *runs* (expect ~0.5 pt run-to-run wobble at temp 0).
+  So the ≤5 candidates you prove must be **DIVERSE — span the *contested* knobs** (e.g.
+  `fewshot_k=2` *and* `4`, schema A *and* B), not just the subset's single #1 per model. The
+  full-set proof is cheap (parallel, leave-one-out, minutes) — **over-prove the shortlist and
+  let the full-set number pick the winner.** *(Real example: a subset ranked a `k=2` config
+  #1; the `k=4` variant it under-ranked was actually the dominant config on the full set —
+  +1 pt AND cheaper. Proving only the subset #1 missed it.)*
 - **Ship a frontier, not a point** — the "best" depends on the accuracy/cost weight; hand the
   user the Pareto set and let them choose.
 
