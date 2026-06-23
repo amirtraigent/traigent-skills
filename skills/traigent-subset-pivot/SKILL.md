@@ -39,10 +39,18 @@ finalists on the whole set. Always **state the permutation count** and frame sea
    **enlarge that group** (augment with more same-type examples from the broader corpus,
    leakage-free — remove them from the few-shot pool), and **optimize THERE**. **Trace the
    failures client-side** for insight (privacy-safe — tracing is local; only configs+scores
-   reach the cloud). This is what breaks plateaus. Fold the improved config back.
-4. **Routing vs one-config-wins — test it.** Cross-evaluate each subset-best on each subset
-   (a 2×2). Recommend **routing only if the off-diagonal genuinely loses**; usually one cheap
-   config wins everywhere (simpler + cheaper).
+   reach the cloud). This is what breaks plateaus. **The pivot has TWO possible outcomes —
+   both valuable:** (a) a config that's better *overall*, OR (b) a **tough-class specialist**
+   that wins the hard subset but NOT the whole set. Outcome (b) is **the routing signal, not
+   a failure** — don't discard it.
+4. **Routing vs one-config-wins — and EXPECT the pivot to surface a routing case.**
+   Cross-evaluate the general-best AND the pivot-best, each on the **general set** and the
+   **tough set** (a 2×2). If the **pivot-best beats the general-best on the tough class**
+   while the general-best wins the rest, **route by question type** — tough-type questions →
+   the specialist, everything else → the general config — and report the **blended
+   accuracy/cost as its own Pareto point** (a routed config IS a frontier candidate; a cheap
+   classifier picks the route). Only **collapse to a single config when it genuinely wins
+   *everywhere*.** Don't force one config when two-selectively beats either alone.
 5. **Prove the finalists on the FULL set — only AFTER the pivot (step 3) folded an improved
    config back.** Narrow to **≤5 candidates**, then validate on the whole set **leave-one-out**
    (leakage-free). Don't run the full set for every config — and **don't reach this step
